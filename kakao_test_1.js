@@ -19,26 +19,33 @@ let hex_arr_1 = [];
 let hex_arr_2 = [];
 let result_arr = [];
 
+// 2의 n 승 -1 을 랜덤함수로 배열에 저장
 for (let x = 0; x < n; x++) {
     arr_1.push(Math.floor(Math.random() * (Math.pow(2, n) - 1)));
     arr_2.push(Math.floor(Math.random() * (Math.pow(2, n) - 1)));
 }
 
+// 로그로 배열 2개 보여주기
 console.log(arr_1);
 console.log(arr_2);
 
+// 2진수로 바꿔서 배열에 넣기
 for (let i = 0; i < n; i++) {
     hex_arr_1.push(ciphers(arr_1[i].toString(2), n));
     hex_arr_2.push(ciphers(arr_2[i].toString(2), n));
     result_arr[i] = '';
 }
 
+// number -> 숫자
+// ciphers -> 자릿수
+// 10진수 1인 경우 2진수 00001 로 만들어 주는 함수
 function ciphers(number, ciphers) {
     while (number.length < ciphers) {
         number = 0 + number;
     }
     return number;
 }
+// 0인지 1인지 비교해서 # 넣기
 for (let a = 0; a < n; a++) {
     for (let z = 0; z < n; z++) {
         if (hex_arr_1[a].substring(z, z + 1) == '1' || hex_arr_2[a].substring(z, z + 1) == '1') {
@@ -49,5 +56,5 @@ for (let a = 0; a < n; a++) {
     }
 }
 
-
+// 결과 배열
 console.log(result_arr);
