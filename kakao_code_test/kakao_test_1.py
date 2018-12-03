@@ -1,4 +1,4 @@
-/*
+'''
 1. 비밀 지도(난이도: 하)
 네오는 평소 프로도가 비상금을 숨겨놓는 장소를 알려줄 비밀지도를 손에 넣었다. 그런데 이 비밀지도는 숫자로 암호화되어 있어 위치를 확인하기 위해서는 암호를 해독해야 한다. 다행히 지도 암호를 해독할 방법을 적어놓은 메모도 함께 발견했다.
 
@@ -7,47 +7,56 @@
 “지도 1”과 “지도 2”는 각각 정수 배열로 암호화되어 있다.
 암호화된 배열은 지도의 각 가로줄에서 벽 부분을 1, 공백 부분을 0으로 부호화했을 때 얻어지는 이진수에 해당하는 값의 배열이다.
 http://tech.kakao.com/2017/09/27/kakao-blind-recruitment-round-1/
-*/
+'''
+import random
+import math
 
 
-// 한변의 길이가 n
-const n = 5;
+n = int(input('한변의 길이를 입력하시오 (5, 6 추천)'))
 
-let arr_1 = [];
-let arr_2 = [];
-let hex_arr_1 = [];
-let hex_arr_2 = [];
-let result_arr = [];
 
-for (let x = 0; x < n; x++) {
-    arr_1.push(Math.floor(Math.random() * (Math.pow(2, n) - 1)));
-    arr_2.push(Math.floor(Math.random() * (Math.pow(2, n) - 1)));
-}
 
-console.log(arr_1);
-console.log(arr_2);
+arr_1 = []
+arr_2 = []
+hex_arr_1 = []
+hex_arr_2 = []
+result_arr =[]
 
-for (let i = 0; i < n; i++) {
-    hex_arr_1.push(ciphers(arr_1[i].toString(2), n));
-    hex_arr_2.push(ciphers(arr_2[i].toString(2), n));
-    result_arr[i] = '';
-}
+# 문자열로 저장
+for x in range(0,n):
+    arr_1.append(random.randrange(0, int(math.pow(2,n))))
+    arr_2.append(random.randrange(0, int(math.pow(2,n))))
+    result_arr= [''] * n
+    
 
-function ciphers(number, ciphers) {
-    while (number.length < ciphers) {
-        number = 0 + number;
-    }
-    return number;
-}
-for (let a = 0; a < n; a++) {
-    for (let z = 0; z < n; z++) {
-        if (hex_arr_1[a].substring(z, z + 1) == '1' || hex_arr_2[a].substring(z, z + 1) == '1') {
+print('사각형 1 : ',arr_1)
+print('사각형 2 : ',arr_2)
+
+
+# 자리수 맞춰주는 함수
+#[2:]는 2진수가 0b 부터 시작하기 때문에 0b 없애고 저장
+# 바이너리 변환 참고
+# https://stackoverflow.com/questions/16926130/convert-to-binary-and-keep-leading-zeros-in-python
+def setCiphers(number, length):
+    return format(number, '#0{}b'.format(length + 2))[2:]
+
+
+# 2진법으로 만들어 배열 넣기
+for i in range(0,n):
+    hex_arr_1.append(setCiphers(arr_1[i], n))
+    hex_arr_2.append(setCiphers(arr_2[i], n))
+
+print('2진법 사각형 1 : ',hex_arr_1)
+print('2진법 사각형 2 : ',hex_arr_2)
+
+
+for a in range(0, n):
+    for z in range(0, n):
+        if hex_arr_1[a][z:z+1] == '1' or hex_arr_2[a][z:z+1] == '1':
             result_arr[a] = result_arr[a] + '#'
-        } else {
+        else:
             result_arr[a] = result_arr[a] + ' '
-        }
-    }
-}
 
-
-console.log(result_arr);
+print('정답 배열 : ',result_arr)
+for y in range(0, n):
+    print(result_arr[y])
