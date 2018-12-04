@@ -43,10 +43,6 @@ class map(object):
             return False
 
     def convert_bin(self, num_list1, num_list2):
-
-        num_list1 = list(num_list1)
-        num_list2 = list(num_list2)
-
         for i in range(self.array_len):
             num_list1[i] = bin(num_list1[i])[2:].zfill(self.array_len)
             num_list2[i] = bin(num_list2[i])[2:].zfill(self.array_len)
@@ -66,15 +62,6 @@ class map(object):
                 result_list[i] = result_list[i] + temp
 
         return result_list
-    
-    def str_to_list(self, str_list):
-        num_list = str_list.split(',')
-        for i in num_list:
-            if self.check_num(int(i)):
-                pass
-            else:
-                print ('error')
-                exit()
 
 if __name__ == "__main__":
     map = map()
@@ -83,10 +70,10 @@ if __name__ == "__main__":
     array_len = input()
     array_1, array_2 = map.list_make(array_len)
 
-    print ('첫번째 배열 입력(,로 구분) : ')
+    print ('첫번째 배열 입력([]안에 ,로 구분) : ')
     input_1 = input()
 
-    print ('두번째 배열 입력(,로 구분) : ')
+    print ('두번째 배열 입력([]안에 ,로 구분) : ')
     input_2 = input()
 
     input_1, input_2 = map.convert_bin(input_1, input_2)
