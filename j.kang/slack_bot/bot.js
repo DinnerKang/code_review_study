@@ -5,6 +5,8 @@ const cron = require('node-cron');
 const apiaiBotkit = require('api-ai-botkit');
 const apiai = apiaiBotkit(keys.apiaiToken);
 
+const request = require('request');
+const cheerio = require('cheerio')
 
 const controller = botkit.slackbot({
     debug: false,
@@ -51,12 +53,12 @@ let menu = {
     ]
 }
 // 점심 먹을지 말해주는 함수
-function startLunch(hour) {
+function startLunch(currentHour) {
     controller.spawn({
         token: keys.botAPIToken
     }, (bot) => {
         bot.say({
-            text: hour + '시 입니다. 점심 드실꺼죠 ?',
+            text: currentHour + '시 입니다. 점심 드실꺼죠 ?',
             channel: 'DEQQKP42U'
         });
     });
@@ -119,7 +121,47 @@ controller.hears('응', botOption, (bot, message) => {
         });
     };
 });
+controller.hears('점심 추천', botOption, (bot, message) =>{
+    let date = new Date();
+    let year = date.getFullYear();
+    let month = date.getMonth();
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
 
+    let yesterday = year + '' + month + '' + (day - 1) + '' + hour + '' + minutes;
+
+    let yesterdayURL = `http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?${yesterday}`;
+    let todayURL = `http://www.kma.go.kr/cgi-bin/aws/nph-aws_txt_min?`; 
+
+    request(todayURL, (err, response, html_1) => {
+        if(err) { throw err};
+        const $ = cheerio.load(html_1);
+        let Seoul = $('.text')[156];
+        let nowTemp = Seoul.children[10].children[0].data;
+        console.log(Seoul.children[10].children[0].data);
+        bot.reply(message, `지금 온도는 ${nowTemp}도 이고`);
+
+        request(yesterdayURL, (err, response, html_2) =>{
+            const $ = cheerio.load(html_2);
+            let Seoul = $('.text')[156];
+            let yesterdayTemp = Seoul.children[10].children[0].data;
+            bot.reply(message, `어제 온도는 ${yesterdayTemp}도 이었습니다.`);
+            setTimeout( function(){
+                recommendation(yesterdayTemp, nowTemp);
+            },200);
+        });
+    });
+    
+    function recommendation(yesterday, today){
+        if( Number(yesterday) > Number(today) ){
+            bot.reply(message, `어제보다 춥네요 따뜻한거 먹을래요 ?`);
+        }else {
+            bot.reply(message, `어제보다 따뜻하네요 뭐먹을까요 ?`);
+        }
+    }
+
+});
 
 
 
@@ -151,7 +193,7 @@ apiai.action('plus', (message, resp, bot) => {
     bot.reply(message, `${sum} 입니당.`);
 });
 
-cron.schedule('0 0 12 * * *', () => {
+cron.schedule('0 46 9 * * *', () => {
     console.log('schedule');
     let hour = new Date().getHours();
 
