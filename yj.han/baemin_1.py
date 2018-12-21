@@ -45,32 +45,49 @@ class game(object):
         else:
             self.d = False
 
-    def plus_game(self, start_index, k):
+    def play_game(self, start_index, k):
 
-        k = start_index + k - 1
-        k = k % self.count
-    
-        loser = self.person[k]
-        del self.person[k]
+        if self.d:
+            loser_index = start_index + k - 1
+        else:
+            loser_index = start_index - k
+        
+        loser_index = loser_index % self.count
+
+        loser = self.person[loser_index]
+        del self.person[loser_index]
         self.count = self.count - 1
         
-        return loser, k
-
+        return loser, loser_index
 
     def run(self):
-        
-        loser, start_index = self.plus_game(0, self.k+1)
+
+        if self.d:
+            loser, start_index = self.play_game(0, self.k+1)
+        else:
+            loser, start_index = self.play_game(0, self.k)
+
         self.k = self.k + self.j
         print ('%d번 탈락' % loser)
 
         while self.count != 1:
-            loser, start_index = self.plus_game(start_index, self.k)
+            loser, start_index = self.play_game(start_index, self.k)
             self.k = self.k + self.j
             print ('%d번 탈락' % loser)
 
         print ('당첨자는 %d님입니다' % self.person[0])
 
 if __name__ == "__main__":
+    #game = game(6,1,1,1)
+    # 2 -> 4 -> 1 -> 3 -> 5 당첨자 : 6
+    
     game = game(10,1,1,2)
+    # 2 -> 5 -> 10 -> 9 -> 4 -> 6 -> 7 -> 3 -> 8 당첨자 : 1
+
+    #game = game(6,-1,1,1)
+    # 6 -> 4 -> 1 -> 5 -> 3 당첨자 : 2
+
+    #game = game(10,-1,1,2)
+    # 10 -> 7 -> 2 -> 3 -> 8 -> 6 -> 5 -> 9 -> 4 당첨자 : 1
 
     game.run()
