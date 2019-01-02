@@ -30,41 +30,59 @@ n는 1 이상 10,000,000 이하의 자연수가 주어집니다.
 d는 1이면 시계방향, 0이면 반시계 방향입니다.
 k와 j는 1 이상 1,000,000 이하의 자연수가 주어집니다.
 */
-
 // 배짱이 수
 let n;
-let a = ['1','1'];
 // 시계방향 -> 1 반시계방향 -> 0
 let direction;
 // 탈락자
 let k;
 // 증가하는 수
 let j;
-let name = 1;
 
 
 class playGame {
 
-    constructor(n, direction, j){
+    constructor(n, direction, k, j) {
         this.n = n;
         this.direction = direction;
+        this.k = k;
         this.j = j;
-        
-        
     }
-    
-    game(){
+
+    game() {
+        const users = this.makeArray();
+        console.log(users);
+
+        this.dropoutUser(users);
+    }
+
+
+    makeArray() {
         // 배짱이들
-        let arr = [];
-        console.log(a);
-        for (var i = 1; i < this.n + 1; i++) {
-            arr.push(i);
+        let users = [];
+        for (let i = 1; i < this.n + 1; i++) {
+            users.push(i);
         }
-        console.log(arr);
+        return users;
     }
-    
-    
+
+    dropoutUser(users) {
+        let droping_users = users;
+        let drop_index;
+        for (let i = 0; i < 1; i++) {
+            drop_index = this.k;
+            delete droping_users[drop_index];
+            
+            this.k = this.k + this.j;
+
+
+
+            console.log(droping_users);
+        }
+
+    }
+
 }
 
-let abc = new playGame(6,1,1);
-abc.game();
+let play = new playGame(6, 1, 1, 1);
+play.game();
