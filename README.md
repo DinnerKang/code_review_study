@@ -5,4 +5,4 @@
 - PM : @DinnerKang : https://github.com/DinnerKang/
 
 1. 규칙 정하기.
-2. 뿌잉뿌잉
+2. 자기 이름 폴더 안에 넣기
