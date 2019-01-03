@@ -12,6 +12,8 @@
   "dependencies": {
     "api-ai-botkit": "^1.1.1",
     "botkit": "^0.6.21",
-    "node-cron": "^2.0.3"
+    "cheerio": "^1.0.0-rc.2",
+    "node-cron": "^2.0.3",
+    "request": "^2.88.0"
   }
 }
