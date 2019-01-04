@@ -47,6 +47,7 @@ class playGame {
         this.direction = direction;
         this.k = k;
         this.j = j;
+        
     }
 
     game() {
