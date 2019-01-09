@@ -54,7 +54,7 @@ class playGame {
         const users = this.makeArray();
         console.log(users);
 
-        const finish_game = this.dropoutUser(users, this.direction);
+        const finish_game = this.dropoutUser(users);
         console.log(finish_game);
     }
 
@@ -68,34 +68,41 @@ class playGame {
         return users;
     }
 
-    dropoutUser(users, direction) {
+    dropoutUser(users) {
         let droping_users = users;
-        let dir = direction;
         let start_index = 0;
         let sum = 0;
         let drop;
 
-        if(dir == -1){
+        if(this.direction == -1){
             droping_users.reverse();
             start_index = -1;
         }
         for (let a = 0; a < users.length - 1; a++) {
+                
                 while (start_index >= droping_users.length) {
                     start_index = start_index - droping_users.length - 1;
                 }
                 sum = this.k;
+
+
                 while (sum > droping_users.length) {
                     sum = sum - droping_users.length;
                 }
                 drop = start_index + sum;
+
+
                 if (drop >= droping_users.length) {
                     drop = drop - droping_users.length;
                 }
+
                 delete droping_users[drop];
+
                 start_index = start_index + this.k - 1;
                 this.k = this.k + this.j;
-                droping_users = droping_users.filter(n => n);
 
+                
+                droping_users = droping_users.filter(n => n);
                 console.log(droping_users);
         }
 
